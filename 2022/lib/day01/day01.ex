@@ -17,6 +17,10 @@ defmodule AoC2022.Day01 do
   end
 
   def parse do
+    __ENV__.file
+    |> Path.dirname()
+    |> File.cd!()
+
     File.read!('input.txt')
     |> String.split("\n\n")
     |> Enum.map(&String.split/1)
