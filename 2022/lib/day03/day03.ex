@@ -1,4 +1,6 @@
 defmodule AoC2022.Day03 do
+  import AoC2022.Common
+
   def part01 do
     parse()
     |> Enum.map(&divide/1)
@@ -49,14 +51,5 @@ defmodule AoC2022.Day03 do
     first
     |> Enum.filter(fn el -> Enum.member?(second, el) && Enum.member?(third, el) end)
     |> Enum.uniq()
-  end
-
-  def parse do
-    __ENV__.file
-    |> Path.dirname()
-    |> File.cd!()
-
-    File.read!('input.txt')
-    |> String.split("\n", trim: true)
   end
 end

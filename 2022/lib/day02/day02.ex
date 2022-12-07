@@ -1,4 +1,6 @@
 defmodule AoC2022.Day02 do
+  import AoC2022.Common
+
   def scores_r do
     %{
       "A X" => 1 + 3,
@@ -39,14 +41,5 @@ defmodule AoC2022.Day02 do
     parse()
     |> Enum.map(fn s -> scores.()[s] end)
     |> Enum.sum()
-  end
-
-  def parse do
-    __ENV__.file
-    |> Path.dirname()
-    |> File.cd!()
-
-    File.read!('input.txt')
-    |> String.split("\n", trim: true)
   end
 end

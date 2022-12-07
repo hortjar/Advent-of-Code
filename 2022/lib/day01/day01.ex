@@ -2,6 +2,7 @@ defmodule AoC2022.Day01 do
   @moduledoc """
   Documentation for `AoC2022.Day01`.
   """
+  import AoC2022.Common, except: [parse: 0]
 
   def part01 do
     parse()
