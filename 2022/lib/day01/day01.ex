@@ -3,12 +3,12 @@ defmodule AoC2022.Day01 do
   Documentation for `AoC2022.Day01`.
   """
 
-  def part1 do
+  def part01 do
     parse()
     |> Enum.max()
   end
 
-  def part2 do
+  def part02 do
     parse()
     |> Enum.sort(:desc)
     |> Enum.chunk_every(3)
