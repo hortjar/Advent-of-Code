@@ -10,6 +10,13 @@ defmodule AoC2022.Day03 do
   end
 
   def part02 do
+    parse()
+    |> Enum.chunk_every(3)
+    |> Enum.map(&matches_group/1)
+    |> Enum.flat_map(fn x -> x end)
+    |> Enum.map(fn s -> :binary.first(s) end)
+    |> Enum.map(&score/1)
+    |> Enum.sum()
   end
 
   def score(ascii) do
@@ -28,6 +35,15 @@ defmodule AoC2022.Day03 do
     second = elem(tuple, 1) |> String.codepoints()
 
     Enum.filter(first, fn el -> Enum.member?(second, el) end)
+    |> Enum.uniq()
+  end
+
+  def matches_group(group) do
+    first = group |> Enum.at(0) |> String.codepoints()
+    second = group |> Enum.at(1) |> String.codepoints()
+    third = group |> Enum.at(2) |> String.codepoints()
+
+    Enum.filter(first, fn el -> Enum.member?(second, el) && Enum.member?(third, el) end)
     |> Enum.uniq()
   end
 
