@@ -3,16 +3,18 @@ defmodule AoC2022.Day03 do
     parse()
     |> Enum.map(&divide/1)
     |> Enum.map(&matches/1)
-    |> Enum.flat_map(fn x -> x end)
-    |> Enum.map(fn s -> :binary.first(s) end)
-    |> Enum.map(&score/1)
-    |> Enum.sum()
+    |> sum_scores()
   end
 
   def part02 do
     parse()
     |> Enum.chunk_every(3)
     |> Enum.map(&matches_group/1)
+    |> sum_scores()
+  end
+
+  def sum_scores(lines) do
+    lines
     |> Enum.flat_map(fn x -> x end)
     |> Enum.map(fn s -> :binary.first(s) end)
     |> Enum.map(&score/1)
@@ -31,10 +33,11 @@ defmodule AoC2022.Day03 do
   end
 
   def matches(tuple) do
-    first = elem(tuple, 0) |> String.codepoints()
-    second = elem(tuple, 1) |> String.codepoints()
+    first = tuple |> elem(0) |> String.codepoints()
+    second = tuple |> elem(1) |> String.codepoints()
 
-    Enum.filter(first, fn el -> Enum.member?(second, el) end)
+    first
+    |> Enum.filter(fn el -> Enum.member?(second, el) end)
     |> Enum.uniq()
   end
 
@@ -43,7 +46,8 @@ defmodule AoC2022.Day03 do
     second = group |> Enum.at(1) |> String.codepoints()
     third = group |> Enum.at(2) |> String.codepoints()
 
-    Enum.filter(first, fn el -> Enum.member?(second, el) && Enum.member?(third, el) end)
+    first
+    |> Enum.filter(fn el -> Enum.member?(second, el) && Enum.member?(third, el) end)
     |> Enum.uniq()
   end
 
