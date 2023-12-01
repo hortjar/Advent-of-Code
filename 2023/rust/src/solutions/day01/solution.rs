@@ -1,3 +1,4 @@
+use core::num;
 use std::collections::BTreeMap;
 
 use crate::solutions::AoCDay;
@@ -25,7 +26,7 @@ impl AoCDay for Day01 {
     fn part01(&self) -> String {
         let input = self.read_input(1, 1);
 
-        let mut calibrations: Vec<u32> = Vec::new();
+        let mut calibration = 0;
         for line in input.lines() {
             let digits: Vec<char> = line.chars().filter(|x| x.is_numeric()).collect();
 
@@ -35,11 +36,10 @@ impl AoCDay for Day01 {
 
             let number = combined.parse::<u32>().expect("Could not parse!");
 
-            calibrations.push(number);
+            calibration += number;
         }
 
-        let result: u32 = calibrations.iter().sum();
-        result.to_string()
+        calibration.to_string()
     }
 
     fn part02(&self) -> String {
@@ -49,7 +49,7 @@ impl AoCDay for Day01 {
             "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "1", "2", "3",
             "4", "5", "6", "7", "8", "9",
         ];
-        let mut calibrations: Vec<u32> = Vec::new();
+        let mut calibration = 0;
         let mut found: BTreeMap<usize, &str> = BTreeMap::new();
         // let mut i = 1;
         for line in input.lines() {
@@ -82,11 +82,10 @@ impl AoCDay for Day01 {
             let number = combined.parse::<u32>().expect("Could not parse!");
             // println!("{}, {}, ={}", first, last, number);
 
-            calibrations.push(number);
+            calibration += number;
             // i += 1;
         }
 
-        let result: u32 = calibrations.iter().sum();
-        result.to_string()
+        calibration.to_string()
     }
 }
