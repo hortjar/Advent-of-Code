@@ -4,7 +4,7 @@ pub struct Day02;
 
 impl Day02 {
     fn parse_game(&self, input: &str) -> Game {
-        let mut new_input = input.replace("Game", "");
+        let new_input = input.replace("Game", "");
         let game_sep_index = new_input.find(":").expect("Game separator not found!");
         let game_index = &new_input[0..game_sep_index]
             .trim()
@@ -31,7 +31,7 @@ impl Day02 {
             for split in draw.split(",") {
                 let item: Vec<&str> = split.trim().split(" ").collect();
 
-                if (item.len() < 2) {
+                if item.len() < 2 {
                     panic!("Drawn item is of wrong format!\n{}", draw);
                 }
 
@@ -105,7 +105,7 @@ impl AoCDay for Day02 {
                 }
             }
 
-            sum += (max_cubeset.blue * max_cubeset.green * max_cubeset.red);
+            sum += max_cubeset.blue * max_cubeset.green * max_cubeset.red;
         }
 
         return sum.to_string();
