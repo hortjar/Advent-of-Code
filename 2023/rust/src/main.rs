@@ -33,6 +33,7 @@ fn main() {
     match choice {
         1 => solutions::day01::solution::Day01.run(),
         2 => solutions::day02::solution::Day02.run(),
+        3 => solutions::day03::solution::Day03.run(),
         _ => println!("Day not yet added!"),
     }
 }
