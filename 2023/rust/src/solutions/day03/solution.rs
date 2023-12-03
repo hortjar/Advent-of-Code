@@ -36,6 +36,77 @@ impl Day03 {
         string_num = string_num.replace(".", "").replace(special_char, "");
         return string_num.parse::<u32>().unwrap_or_default();
     }
+    fn get_numbers_on_lines(
+        &self,
+        a: &str,
+        b: &str,
+        c: &str,
+        index: usize,
+        char: char,
+    ) -> [[u32; 3]; 3] {
+        let chars_a: Vec<char> = a.chars().collect();
+        let chars_b: Vec<char> = b.chars().collect();
+        let chars_c: Vec<char> = c.chars().collect();
+
+        let diag_left_above = chars_a[index - 1];
+        let above = chars_a[index];
+        let diag_right_above = chars_a[index + 1];
+
+        let mut numbers = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+        if diag_left_above.is_numeric() {
+            numbers[0][0] = self.parse_num_from_pos(a, index - 1, char);
+        }
+        if above.is_numeric() {
+            let new_num = self.parse_num_from_pos(a, index, char);
+            if !numbers[0].contains(&new_num) {
+                numbers[0][1] = new_num;
+            }
+        }
+        if diag_right_above.is_numeric() {
+            let new_num = self.parse_num_from_pos(a, index + 1, char);
+            if !numbers[0].contains(&new_num) {
+                numbers[0][2] = new_num;
+            }
+        }
+
+        let left = chars_b[index - 1];
+        let right = chars_b[index + 1];
+
+        if left.is_numeric() {
+            let new_num = self.parse_num_from_pos(b, index - 1, char);
+            if !numbers[1].contains(&new_num) {
+                numbers[1][0] = new_num;
+            }
+        }
+        if right.is_numeric() {
+            let new_num = self.parse_num_from_pos(b, index + 1, char);
+            if !numbers[1].contains(&new_num) {
+                numbers[1][1] = new_num;
+            }
+        }
+
+        let diag_left_below = chars_c[index - 1];
+        let below = chars_c[index];
+        let diag_right_below = chars_c[index + 1];
+
+        if diag_left_below.is_numeric() {
+            numbers[2][0] = self.parse_num_from_pos(c, index - 1, char);
+        }
+        if below.is_numeric() {
+            let new_num = self.parse_num_from_pos(c, index, char);
+            if !numbers[2].contains(&new_num) {
+                numbers[2][1] = new_num;
+            }
+        }
+        if diag_right_below.is_numeric() {
+            let new_num = self.parse_num_from_pos(c, index + 1, char);
+            if !numbers[2].contains(&new_num) {
+                numbers[2][2] = new_num;
+            }
+        }
+
+        return numbers;
+    }
 }
 
 impl AoCDay for Day03 {
@@ -51,85 +122,16 @@ impl AoCDay for Day03 {
         let mut sum: u32 = 0;
 
         for i in 0..new_lines.len() {
-            let chars_a: Vec<char> = chunk[0].chars().collect();
-            let chars_b: Vec<char> = chunk[1].chars().collect();
-            let chars_c: Vec<char> = chunk[2].chars().collect();
-
-            // process same line
-            let same_line_indicies: Vec<(usize, char)> = chunk[1]
+            let indices: Vec<(usize, char)> = chunk[1]
                 .char_indices()
                 .filter(|x| self.is_special_char(x.1))
                 .collect();
-
-            for c in same_line_indicies {
-                let left = chars_b[c.0 - 1];
-                let right = chars_b[c.0 + 1];
-                let mut numbers = [0, 0];
-                if left.is_numeric() {
-                    let new_num = self.parse_num_from_pos(&chunk[1], c.0 - 1, c.1);
-                    if !numbers.contains(&new_num) {
-                        numbers[0] = new_num;
-                    }
-                }
-                if right.is_numeric() {
-                    let new_num = self.parse_num_from_pos(&chunk[1], c.0 + 1, c.1);
-                    if !numbers.contains(&new_num) {
-                        numbers[1] = new_num;
-                    }
-                }
-                sum += numbers[0] + numbers[1];
-                numbers = [0, 0];
-            }
-
-            let second_line_indicies: Vec<(usize, char)> = chunk[1]
-                .char_indices()
-                .filter(|x| self.is_special_char(x.1))
-                .collect();
-            for c in second_line_indicies {
-                let diag_left_above = chars_a[c.0 - 1];
-                let above = chars_a[c.0];
-                let diag_right_above = chars_a[c.0 + 1];
-
-                let mut numbers = [0, 0, 0];
-                if diag_left_above.is_numeric() {
-                    numbers[0] = self.parse_num_from_pos(&chunk[0], c.0 - 1, c.1);
-                }
-                if above.is_numeric() {
-                    let new_num = self.parse_num_from_pos(&chunk[0], c.0, c.1);
-                    if !numbers.contains(&new_num) {
-                        numbers[1] = new_num;
-                    }
-                }
-                if diag_right_above.is_numeric() {
-                    let new_num = self.parse_num_from_pos(&chunk[0], c.0 + 1, c.1);
-                    if !numbers.contains(&new_num) {
-                        numbers[2] = new_num;
-                    }
-                }
-
-                sum += numbers[0] + numbers[1] + numbers[2];
-                numbers = [0, 0, 0];
-
-                let diag_left_below = chars_c[c.0 - 1];
-                let below = chars_c[c.0];
-                let diag_right_below = chars_c[c.0 + 1];
-
-                if diag_left_below.is_numeric() {
-                    numbers[0] = self.parse_num_from_pos(&chunk[2], c.0 - 1, c.1);
-                }
-                if below.is_numeric() {
-                    let new_num = self.parse_num_from_pos(&chunk[2], c.0, c.1);
-                    if !numbers.contains(&new_num) {
-                        numbers[1] = new_num;
-                    }
-                }
-                if diag_right_below.is_numeric() {
-                    let new_num = self.parse_num_from_pos(&chunk[2], c.0 + 1, c.1);
-                    if !numbers.contains(&new_num) {
-                        numbers[2] = new_num;
-                    }
-                }
-                sum += numbers[0] + numbers[1] + numbers[2];
+            for c in indices {
+                self.get_numbers_on_lines(&chunk[0], &chunk[1], &chunk[2], c.0, c.1)
+                    .iter()
+                    .flatten()
+                    .filter(|x| **x > 0)
+                    .for_each(|x| sum += x);
             }
 
             // next chunk
@@ -156,70 +158,10 @@ impl AoCDay for Day03 {
         let mut sum: u32 = 0;
 
         for i in 0..new_lines.len() {
-            let chars_a: Vec<char> = chunk[0].chars().collect();
-            let chars_b: Vec<char> = chunk[1].chars().collect();
-            let chars_c: Vec<char> = chunk[2].chars().collect();
-
-            let second_line_indicies: Vec<(usize, char)> =
+            let indices: Vec<(usize, char)> =
                 chunk[1].char_indices().filter(|x| x.1 == '*').collect();
-            for c in second_line_indicies {
-                let diag_left_above = chars_a[c.0 - 1];
-                let above = chars_a[c.0];
-                let diag_right_above = chars_a[c.0 + 1];
-
-                let mut numbers = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-                if diag_left_above.is_numeric() {
-                    numbers[0][0] = self.parse_num_from_pos(&chunk[0], c.0 - 1, c.1);
-                }
-                if above.is_numeric() {
-                    let new_num = self.parse_num_from_pos(&chunk[0], c.0, c.1);
-                    if !numbers[0].contains(&new_num) {
-                        numbers[0][1] = new_num;
-                    }
-                }
-                if diag_right_above.is_numeric() {
-                    let new_num = self.parse_num_from_pos(&chunk[0], c.0 + 1, c.1);
-                    if !numbers[0].contains(&new_num) {
-                        numbers[0][2] = new_num;
-                    }
-                }
-
-                let left = chars_b[c.0 - 1];
-                let right = chars_b[c.0 + 1];
-
-                if left.is_numeric() {
-                    let new_num = self.parse_num_from_pos(&chunk[1], c.0 - 1, c.1);
-                    if !numbers[1].contains(&new_num) {
-                        numbers[1][0] = new_num;
-                    }
-                }
-                if right.is_numeric() {
-                    let new_num = self.parse_num_from_pos(&chunk[1], c.0 + 1, c.1);
-                    if !numbers[1].contains(&new_num) {
-                        numbers[1][1] = new_num;
-                    }
-                }
-
-                let diag_left_below = chars_c[c.0 - 1];
-                let below = chars_c[c.0];
-                let diag_right_below = chars_c[c.0 + 1];
-
-                if diag_left_below.is_numeric() {
-                    numbers[2][0] = self.parse_num_from_pos(&chunk[2], c.0 - 1, c.1);
-                }
-                if below.is_numeric() {
-                    let new_num = self.parse_num_from_pos(&chunk[2], c.0, c.1);
-                    if !numbers[2].contains(&new_num) {
-                        numbers[2][1] = new_num;
-                    }
-                }
-                if diag_right_below.is_numeric() {
-                    let new_num = self.parse_num_from_pos(&chunk[2], c.0 + 1, c.1);
-                    if !numbers[2].contains(&new_num) {
-                        numbers[2][2] = new_num;
-                    }
-                }
-
+            for c in indices {
+                let numbers = self.get_numbers_on_lines(&chunk[0], &chunk[1], &chunk[2], c.0, c.1);
                 let non_zero = numbers
                     .iter()
                     .flatten()
@@ -228,7 +170,7 @@ impl AoCDay for Day03 {
                 if non_zero.len() == 2 {
                     let mut mul = 1;
                     for part in non_zero {
-                        mul *= part;
+                        mul *= *part;
                     }
                     sum += mul;
                 }
