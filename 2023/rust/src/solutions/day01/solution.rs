@@ -1,4 +1,3 @@
-use core::num;
 use std::collections::BTreeMap;
 
 use crate::solutions::AoCDay;
