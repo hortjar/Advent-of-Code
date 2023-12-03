@@ -9,11 +9,22 @@ pub trait AoCDay {
     fn part02(&self) -> String;
 
     fn run(&self) {
-        let sol01 = self.part01();
-        println!("{}", sol01);
+        use std::time::Instant;
 
+        let now1 = Instant::now();
+        let sol01 = self.part01();
+        let elapsed1 = now1.elapsed();
+
+        let now2 = Instant::now();
         let sol02 = self.part02();
+        let elapsed2 = now2.elapsed();
+
+        println!("{}", sol01);
         println!("{}", sol02);
+
+        println!("Time to solve part1: {:.2?}", elapsed1);
+        println!("Time to solve part2: {:.2?}", elapsed2);
+        println!("Time to solve all:   {:.2?}", elapsed1 + elapsed2);
     }
 
     fn read_input(&self, day: i8, part: i8) -> String {
