@@ -95,3 +95,9 @@ impl Card {
         return score;
     }
 }
+
+struct Card {
+    game: u32,
+    winning_numbers: Vec<u32>,
+    drawn_numbers: Vec<u32>,
+}
