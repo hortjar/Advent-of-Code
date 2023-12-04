@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, iter::repeat};
 
 use crate::solutions::AoCDay;
 
@@ -56,19 +56,23 @@ impl AoCDay for Day04 {
 
     fn part02(&self) -> String {
         let input = self.read_input(4, 2);
-        let mut sum = 0;
 
         let parsed = self.parse_cards(&input);
-        let cards = parsed.iter().map(|card| {
-            let size = card.matches().len();
-            let mut hm: HashMap<u32, Vec<usize>> = HashMap::new();
-            hm.insert(card.card, vec![size]);
-            return hm;
-        });
+        let mut number_of_cards: Vec<u32> = repeat(1).take(parsed.len()).collect();
+        let card_matches = parsed
+            .iter()
+            .map(|card| card.matches().len())
+            .collect::<Vec<usize>>();
 
-        for card_map in cards {}
+        for (i, matches) in card_matches.iter().enumerate() {
+            for _ in 0..number_of_cards[i] {
+                for k in i + 1..i + 1 + matches {
+                    number_of_cards[k] += 1;
+                }
+            }
+        }
 
-        return sum.to_string();
+        return number_of_cards.iter().sum::<u32>().to_string();
     }
 }
 
@@ -94,10 +98,4 @@ impl Card {
         _matches.iter().skip(1).for_each(|_| score *= 2);
         return score;
     }
-}
-
-struct Card {
-    game: u32,
-    winning_numbers: Vec<u32>,
-    drawn_numbers: Vec<u32>,
 }
