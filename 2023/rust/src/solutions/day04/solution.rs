@@ -1,4 +1,4 @@
-use std::{collections::HashMap, iter::repeat};
+use std::iter::repeat;
 
 use crate::solutions::AoCDay;
 
@@ -20,19 +20,11 @@ impl Day04 {
                 let l = line.replace("Card ", "");
                 let split = l.split(|c| c == ':' || c == '|').collect::<Vec<&str>>();
 
-                let card = &split
-                    .get(0)
-                    .expect("No card on index 0")
-                    .trim()
-                    .parse::<u32>()
-                    .unwrap_or_default();
-
                 let winning_nums =
                     self.parse_numbers(&split.get(1).expect("Mo numbers on index 1"));
                 let drawn_nums = self.parse_numbers(&split.get(2).expect("Mo numbers on index 2"));
 
                 return Card {
-                    card: *card,
                     winning_numbers: winning_nums.to_owned(),
                     drawn_numbers: drawn_nums.to_owned(),
                 };
@@ -77,7 +69,6 @@ impl AoCDay for Day04 {
 }
 
 struct Card {
-    card: u32,
     winning_numbers: Vec<u32>,
     drawn_numbers: Vec<u32>,
 }
