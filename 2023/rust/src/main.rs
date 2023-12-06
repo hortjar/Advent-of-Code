@@ -35,6 +35,7 @@ fn main() {
         2 => solutions::day02::solution::Day02.run(),
         3 => solutions::day03::solution::Day03.run(),
         4 => solutions::day04::solution::Day04.run(),
+        5 => solutions::day05::solution::Day05.run(),
         _ => println!("Day not yet added!"),
     }
 }

@@ -2,6 +2,7 @@ pub mod day01;
 pub mod day02;
 pub mod day03;
 pub mod day04;
+pub mod day05;
 use std::fs;
 
 pub trait AoCDay {
@@ -15,11 +16,12 @@ pub trait AoCDay {
         let sol01 = self.part01();
         let elapsed1 = now1.elapsed();
 
+        println!("{}", sol01);
+
         let now2 = Instant::now();
         let sol02 = self.part02();
         let elapsed2 = now2.elapsed();
 
-        println!("{}", sol01);
         println!("{}", sol02);
 
         println!("Time to solve part1: {:.2?}", elapsed1);
