@@ -5,22 +5,12 @@ import java.io.File
 import kotlin.math.abs
 
 class Day01 {
-  private fun getIntArraySorted(lines: List<String>): MutableList<MutableList<Int>> {
-    var intArray = lines.fold(mutableListOf<MutableList<Int>>()) { acc, line ->
-      if (acc.size == 0) {
-        acc.add(mutableListOf())
-        acc.add(mutableListOf())
-      }
+  private fun getIntArraySorted(lines: List<String>): List<List<Int>> {
+    val intArray = lines.fold(listOf(listOf<Int>(), listOf<Int>())) { acc, line ->
       val pair = line.replace("   ", " ") .split(' ')
-      acc[0].add(pair[0].toInt())
-      acc[1].add(pair[1].toInt())
-      acc
+      listOf(acc[0] + (pair[0].toInt()), acc[1] + (pair[1].toInt()))
     }
-
-    intArray[0].sort()
-    intArray[1].sort()
-
-    return intArray;
+    return listOf(intArray[0].sorted(), intArray[1].sorted());
   }
 
   fun solve01() {
