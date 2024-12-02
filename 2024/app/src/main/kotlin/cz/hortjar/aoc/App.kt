@@ -6,7 +6,7 @@ import cz.hortjar.aoc.day02.Day02
 
 fun main() {
   // TODO: get this from cli args
-  val day = 1;
+  val day = 2;
   var solver: Base = when(day) {
     1 -> Day01()
     else -> Day02()
