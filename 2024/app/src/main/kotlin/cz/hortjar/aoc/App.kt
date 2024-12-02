@@ -1,18 +1,21 @@
 package cz.hortjar.aoc
 
+import cz.hortjar.aoc.base.Base
 import cz.hortjar.aoc.day01.Day01
-import java.io.File
-import java.nio.file.Paths
-
-fun readInput(day: Int): List<String> {
-  var paddedDay = "$day".padStart(2, '0')
-  var path = Paths.get("").toAbsolutePath().toString()
-
-  return File("$path/app/src/main/kotlin/cz/hortjar/aoc/day$paddedDay/input").readLines()
-}
+import cz.hortjar.aoc.day02.Day02
 
 fun main() {
-  var d01 = Day01()
-  d01.solve01()
-  d01.solve02()
+  // TODO: get this from cli args
+  val day = 1;
+  var solver: Base = when(day) {
+    1 -> Day01()
+    else -> Day02()
+  }
+
+  val part1 = solver.solve01()
+  val part2 = solver.solve02()
+
+  println("Day $day")
+  println("Part 1: $part1")
+  println("Part 2: $part2")
 }
